@@ -20,7 +20,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.j2objc.annotations.Weak;
 import java.io.Serializable;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import javax.annotation.Nullable;
 
 /**
  * {@code keySet()} implementation for {@link ImmutableMap}.
@@ -47,7 +47,7 @@ final class ImmutableMapKeySet<K, V> extends ImmutableSet.Indexed<K> {
   }
 
   @Override
-  public boolean contains(@NullableDecl Object object) {
+  public boolean contains(@Nullable Object object) {
     return map.containsKey(object);
   }
 

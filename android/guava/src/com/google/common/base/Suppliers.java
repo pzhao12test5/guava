@@ -18,7 +18,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.annotations.VisibleForTesting;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import javax.annotation.Nullable;
 
 /**
  * Useful suppliers.
@@ -60,7 +60,7 @@ public final class Suppliers {
     }
 
     @Override
-    public boolean equals(@NullableDecl Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof SupplierComposition) {
         SupplierComposition<?, ?> that = (SupplierComposition<?, ?>) obj;
         return function.equals(that.function) && supplier.equals(that.supplier);
@@ -142,7 +142,7 @@ public final class Suppliers {
 
     private static final long serialVersionUID = 0;
   }
-
+  
   @VisibleForTesting
   static class NonSerializableMemoizingSupplier<T> implements Supplier<T> {
     volatile Supplier<T> delegate;
@@ -255,15 +255,17 @@ public final class Suppliers {
     private static final long serialVersionUID = 0;
   }
 
-  /** Returns a supplier that always supplies {@code instance}. */
-  public static <T> Supplier<T> ofInstance(@NullableDecl T instance) {
+  /**
+   * Returns a supplier that always supplies {@code instance}.
+   */
+  public static <T> Supplier<T> ofInstance(@Nullable T instance) {
     return new SupplierOfInstance<T>(instance);
   }
 
   private static class SupplierOfInstance<T> implements Supplier<T>, Serializable {
     final T instance;
 
-    SupplierOfInstance(@NullableDecl T instance) {
+    SupplierOfInstance(@Nullable T instance) {
       this.instance = instance;
     }
 
@@ -273,7 +275,7 @@ public final class Suppliers {
     }
 
     @Override
-    public boolean equals(@NullableDecl Object obj) {
+    public boolean equals(@Nullable Object obj) {
       if (obj instanceof SupplierOfInstance) {
         SupplierOfInstance<?> that = (SupplierOfInstance<?>) obj;
         return Objects.equal(instance, that.instance);

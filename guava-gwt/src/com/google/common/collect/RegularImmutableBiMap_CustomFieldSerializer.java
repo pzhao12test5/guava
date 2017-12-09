@@ -24,7 +24,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * This class implements the GWT serialization of {@link RegularImmutableBiMap}.
+ * This class implements the GWT serialization of
+ * {@link RegularImmutableBiMap}.
  *
  * @author Chris Povirk
  */

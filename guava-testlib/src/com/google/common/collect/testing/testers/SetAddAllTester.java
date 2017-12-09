@@ -25,8 +25,9 @@ import com.google.common.collect.testing.features.CollectionFeature;
 import com.google.common.collect.testing.features.CollectionSize;
 
 /**
- * A generic JUnit test which tests addAll operations on a set. Can't be invoked directly; please
- * see {@link com.google.common.collect.testing.SetTestSuiteBuilder}.
+ * A generic JUnit test which tests addAll operations on a set. Can't be
+ * invoked directly; please see
+ * {@link com.google.common.collect.testing.SetTestSuiteBuilder}.
  *
  * @author Kevin Bourrillion
  */

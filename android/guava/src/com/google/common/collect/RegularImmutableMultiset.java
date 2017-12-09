@@ -18,7 +18,7 @@ import com.google.common.annotations.GwtCompatible;
 import com.google.common.primitives.Ints;
 import com.google.errorprone.annotations.concurrent.LazyInit;
 import com.google.j2objc.annotations.WeakOuter;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import javax.annotation.Nullable;
 
 /**
  * Implementation of {@link ImmutableMultiset} with zero or more elements.
@@ -35,7 +35,8 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   private final transient ObjectCountHashMap<E> contents;
   private final transient int size;
 
-  @LazyInit private transient ImmutableSet<E> elementSet;
+  @LazyInit
+  private transient ImmutableSet<E> elementSet;
 
   RegularImmutableMultiset(ObjectCountHashMap<E> contents) {
     this.contents = contents;
@@ -52,7 +53,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
   }
 
   @Override
-  public int count(@NullableDecl Object element) {
+  public int count(@Nullable Object element) {
     return contents.get(element);
   }
 
@@ -76,7 +77,7 @@ class RegularImmutableMultiset<E> extends ImmutableMultiset<E> {
     }
 
     @Override
-    public boolean contains(@NullableDecl Object object) {
+    public boolean contains(@Nullable Object object) {
       return RegularImmutableMultiset.this.contains(object);
     }
 

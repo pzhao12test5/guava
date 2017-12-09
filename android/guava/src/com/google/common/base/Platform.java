@@ -21,7 +21,7 @@ import java.util.ServiceConfigurationError;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import javax.annotation.Nullable;
 
 /**
  * Methods factored out so that they can be emulated differently in GWT.
@@ -46,14 +46,16 @@ final class Platform {
 
   static <T extends Enum<T>> Optional<T> getEnumIfPresent(Class<T> enumClass, String value) {
     WeakReference<? extends Enum<?>> ref = Enums.getEnumConstants(enumClass).get(value);
-    return ref == null ? Optional.<T>absent() : Optional.of(enumClass.cast(ref.get()));
+    return ref == null
+        ? Optional.<T>absent()
+        : Optional.of(enumClass.cast(ref.get()));
   }
 
   static String formatCompact4Digits(double value) {
     return String.format(Locale.ROOT, "%.4g", value);
   }
 
-  static boolean stringIsNullOrEmpty(@NullableDecl String string) {
+  static boolean stringIsNullOrEmpty(@Nullable String string) {
     return string == null || string.isEmpty();
   }
 

@@ -33,8 +33,9 @@ import java.lang.reflect.Method;
 import java.util.Spliterator;
 
 /**
- * A generic JUnit test which tests {@code spliterator} operations on a collection. Can't be invoked
- * directly; please see {@link com.google.common.collect.testing.CollectionTestSuiteBuilder}.
+ * A generic JUnit test which tests {@code spliterator} operations on a collection.
+ * Can't be invoked directly; please see
+ * {@link com.google.common.collect.testing.CollectionTestSuiteBuilder}.
  *
  * @author Louis Wasserman
  */

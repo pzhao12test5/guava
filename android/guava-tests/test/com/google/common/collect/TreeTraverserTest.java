@@ -23,8 +23,8 @@ import com.google.common.base.Optional;
 import com.google.common.testing.NullPointerTester;
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.Nullable;
 import junit.framework.TestCase;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 /**
  * Tests for {@code TreeTraverser}.
@@ -45,8 +45,10 @@ public class TreeTraverserTest extends TestCase {
 
   private static final class BinaryTree {
     final char value;
-    @NullableDecl final BinaryTree left;
-    @NullableDecl final BinaryTree right;
+    @Nullable
+    final BinaryTree left;
+    @Nullable
+    final BinaryTree right;
 
     private BinaryTree(char value, BinaryTree left, BinaryTree right) {
       this.value = value;
@@ -55,13 +57,12 @@ public class TreeTraverserTest extends TestCase {
     }
   }
 
-  private static final TreeTraverser<Tree> ADAPTER =
-      new TreeTraverser<Tree>() {
-        @Override
-        public Iterable<Tree> children(Tree node) {
-          return node.children;
-        }
-      };
+  private static final TreeTraverser<Tree> ADAPTER = new TreeTraverser<Tree>() {
+    @Override
+    public Iterable<Tree> children(Tree node) {
+      return node.children;
+    }
+  };
 
   private static final TreeTraverser<Tree> ADAPTER_USING_USING =
       TreeTraverser.using(
@@ -75,16 +76,16 @@ public class TreeTraverserTest extends TestCase {
   private static final BinaryTreeTraverser<BinaryTree> BIN_ADAPTER =
       new BinaryTreeTraverser<BinaryTree>() {
 
-        @Override
-        public Optional<BinaryTree> leftChild(BinaryTree node) {
-          return Optional.fromNullable(node.left);
-        }
+    @Override
+    public Optional<BinaryTree> leftChild(BinaryTree node) {
+      return Optional.fromNullable(node.left);
+    }
 
-        @Override
-        public Optional<BinaryTree> rightChild(BinaryTree node) {
-          return Optional.fromNullable(node.right);
-        }
-      };
+    @Override
+    public Optional<BinaryTree> rightChild(BinaryTree node) {
+      return Optional.fromNullable(node.right);
+    }
+  };
 
   //        h
   //      / | \

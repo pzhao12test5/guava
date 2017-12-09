@@ -19,8 +19,9 @@ package com.google.common.collect.testing.testers;
 import com.google.common.annotations.GwtCompatible;
 
 /**
- * A generic JUnit test which tests {@code get()} operations on a list. Can't be invoked directly;
- * please see {@link com.google.common.collect.testing.ListTestSuiteBuilder}.
+ * A generic JUnit test which tests {@code get()} operations on a list. Can't be
+ * invoked directly; please see
+ * {@link com.google.common.collect.testing.ListTestSuiteBuilder}.
  *
  * @author Chris Povirk
  */

@@ -42,7 +42,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.concurrent.locks.LockSupport;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import javax.annotation.Nullable;
 
 /**
  * An abstract implementation of {@link ListenableFuture}, intended for advanced users only. More
@@ -168,12 +168,14 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
     }
   }
 
-  /** Waiter links form a Treiber stack, in the {@link #waiters} field. */
+  /**
+   * Waiter links form a Treiber stack, in the {@link #waiters} field.
+   */
   private static final class Waiter {
     static final Waiter TOMBSTONE = new Waiter(false /* ignored param */);
 
-    @NullableDecl volatile Thread thread;
-    @NullableDecl volatile Waiter next;
+    @Nullable volatile Thread thread;
+    @Nullable volatile Waiter next;
 
     /**
      * Constructor for the TOMBSTONE, avoids use of ATOMIC_HELPER in case this class is loaded
@@ -208,11 +210,10 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
    * Marks the given node as 'deleted' (null waiter) and then scans the list to unlink all deleted
    * nodes. This is an O(n) operation in the common case (and O(n^2) in the worst), but we are saved
    * by two things.
-   *
    * <ul>
-   *   <li>This is only called when a waiting thread times out or is interrupted. Both of which
-   *       should be rare.
-   *   <li>The waiters list should be very short.
+   * <li>This is only called when a waiting thread times out or is interrupted. Both of which should
+   *     be rare.
+   * <li>The waiters list should be very short.
    * </ul>
    */
   private void removeWaiter(Waiter node) {
@@ -250,7 +251,7 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
     final Executor executor;
 
     // writes to next are made visible by subsequent CAS's on the listeners field
-    @NullableDecl Listener next;
+    @Nullable Listener next;
 
     Listener(Runnable task, Executor executor) {
       this.task = task;
@@ -295,9 +296,9 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
     }
 
     final boolean wasInterrupted;
-    @NullableDecl final Throwable cause;
+    @Nullable final Throwable cause;
 
-    Cancellation(boolean wasInterrupted, @NullableDecl Throwable cause) {
+    Cancellation(boolean wasInterrupted, @Nullable Throwable cause) {
       this.wasInterrupted = wasInterrupted;
       this.cause = cause;
     }
@@ -332,15 +333,13 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
    * This field encodes the current state of the future.
    *
    * <p>The valid values are:
-   *
    * <ul>
-   *   <li>{@code null} initial state, nothing has happened.
-   *   <li>{@link Cancellation} terminal state, {@code cancel} was called.
-   *   <li>{@link Failure} terminal state, {@code setException} was called.
-   *   <li>{@link SetFuture} intermediate state, {@code setFuture} was called.
-   *   <li>{@link #NULL} terminal state, {@code set(null)} was called.
-   *   <li>Any other non-null value, terminal state, {@code set} was called with a non-null
-   *       argument.
+   * <li>{@code null} initial state, nothing has happened.
+   * <li>{@link Cancellation} terminal state, {@code cancel} was called.
+   * <li>{@link Failure} terminal state, {@code setException} was called.
+   * <li>{@link SetFuture} intermediate state, {@code setFuture} was called.
+   * <li>{@link #NULL} terminal state, {@code set(null)} was called.
+   * <li>Any other non-null value, terminal state, {@code set} was called with a non-null argument.
    * </ul>
    */
   private volatile Object value;
@@ -351,7 +350,9 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
   /** All waiting threads. */
   private volatile Waiter waiters;
 
-  /** Constructor for use by subclasses. */
+  /**
+   * Constructor for use by subclasses.
+   */
   protected AbstractFuture() {}
 
   // Gets and Timed Gets
@@ -460,10 +461,7 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
     // completed after the timeout expired, and the message might be success.
     if (isDone()) {
       throw new TimeoutException(
-          "Waited "
-              + timeout
-              + " "
-              + Ascii.toLowerCase(unit.toString())
+          "Waited " + timeout + " " + Ascii.toLowerCase(unit.toString())
               + " but future completed as timeout expired");
     }
     throw new TimeoutException(
@@ -518,7 +516,9 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
     return getDoneValue(value);
   }
 
-  /** Unboxes {@code obj}. Assumes that obj is not {@code null} or a {@link SetFuture}. */
+  /**
+   * Unboxes {@code obj}. Assumes that obj is not {@code null} or a {@link SetFuture}.
+   */
   private V getDoneValue(Object obj) throws ExecutionException {
     // While this seems like it might be too branch-y, simple benchmarking proves it to be
     // unmeasurable (comparing done AbstractFutures with immediateFuture)
@@ -601,7 +601,7 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
               localValue = trusted.value;
               if (localValue == null | localValue instanceof SetFuture) {
                 abstractFuture = trusted;
-                continue; // loop back up and try to complete the new future
+                continue;  // loop back up and try to complete the new future
               }
             } else {
               // not a TrustedFuture, call cancel directly.
@@ -685,7 +685,7 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
    * @return true if the attempt was accepted, completing the {@code Future}
    */
   @CanIgnoreReturnValue
-  protected boolean set(@NullableDecl V value) {
+  protected boolean set(@Nullable V value) {
     Object valueToSet = value == null ? NULL : value;
     if (ATOMIC_HELPER.casValue(this, null, valueToSet)) {
       complete(this);
@@ -834,8 +834,7 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
   /** Unblocks all threads and runs all listeners. */
   private static void complete(AbstractFuture<?> future) {
     Listener next = null;
-    outer:
-    while (true) {
+    outer: while (true) {
       future.releaseWaiters();
       // We call this before the listeners in order to avoid needing to manage a separate stack data
       // structure for them.
@@ -902,7 +901,7 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
    * If this future has been cancelled (and possibly interrupted), cancels (and possibly interrupts)
    * the given future (if available).
    */
-  final void maybePropagateCancellationTo(@NullableDecl Future<?> related) {
+  final void maybePropagateCancellationTo(@Nullable Future<?> related) {
     if (related != null & isCancelled()) {
       related.cancel(wasInterrupted());
     }
@@ -914,7 +913,9 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
     do {
       head = waiters;
     } while (!ATOMIC_HELPER.casWaiters(this, head, Waiter.TOMBSTONE));
-    for (Waiter currentWaiter = head; currentWaiter != null; currentWaiter = currentWaiter.next) {
+    for (Waiter currentWaiter = head;
+        currentWaiter != null;
+        currentWaiter = currentWaiter.next) {
       currentWaiter.unpark();
     }
   }
@@ -980,7 +981,7 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
    * @return null if an explanation cannot be provided because the future is done.
    * @since 23.0
    */
-  @NullableDecl
+  @Nullable
   protected String pendingToString() {
     Object localValue = value;
     if (localValue instanceof SetFuture) {
@@ -1007,8 +1008,8 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
   }
 
   /**
-   * Submits the given runnable to the given {@link Executor} catching and logging all {@linkplain
-   * RuntimeException runtime exceptions} thrown by the executor.
+   * Submits the given runnable to the given {@link Executor} catching and logging all
+   * {@linkplain RuntimeException runtime exceptions} thrown by the executor.
    */
   private static void executeListener(Runnable runnable, Executor executor) {
     try {
@@ -1223,7 +1224,7 @@ public abstract class AbstractFuture<V> extends FluentFuture<V> {
   }
 
   private static CancellationException cancellationExceptionWithCause(
-      @NullableDecl String message, @NullableDecl Throwable cause) {
+      @Nullable String message, @Nullable Throwable cause) {
     CancellationException exception = new CancellationException(message);
     exception.initCause(cause);
     return exception;

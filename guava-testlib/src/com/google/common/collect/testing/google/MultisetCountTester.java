@@ -81,8 +81,9 @@ public class MultisetCountTester<E> extends AbstractMultisetTester<E> {
   }
 
   /**
-   * Returns {@link Method} instances for the read tests that assume multisets support duplicates so
-   * that the test of {@code Multisets.forSet()} can suppress them.
+   * Returns {@link Method} instances for the read tests that assume multisets
+   * support duplicates so that the test of {@code Multisets.forSet()} can
+   * suppress them.
    */
   @GwtIncompatible // reflection
   public static List<Method> getCountDuplicateInitializingMethods() {

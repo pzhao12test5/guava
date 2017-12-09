@@ -59,17 +59,15 @@ public class TypeTokenSubtypeTest extends TestCase {
   public static void testSubtypeOfStaticAnonymousClass() {
     Class<?> superclass = new Mall<Outdoor>().new Shop<Electronics>() {}.getClass();
     assertTrue(TypeToken.of(superclass).isSubtypeOf(superclass));
-    assertFalse(
-        TypeToken.of(new Mall<Outdoor>().new Shop<Electronics>() {}.getClass())
-            .isSubtypeOf(superclass));
+    assertFalse(TypeToken.of(new Mall<Outdoor>().new Shop<Electronics>() {}.getClass())
+        .isSubtypeOf(superclass));
   }
 
   public void testSubtypeOfNonStaticAnonymousClass() {
     Class<?> superclass = new Mall<Outdoor>().new Shop<Electronics>() {}.getClass();
     assertTrue(TypeToken.of(superclass).isSubtypeOf(superclass));
-    assertFalse(
-        TypeToken.of(new Mall<Outdoor>().new Shop<Electronics>() {}.getClass())
-            .isSubtypeOf(superclass));
+    assertFalse(TypeToken.of(new Mall<Outdoor>().new Shop<Electronics>() {}.getClass())
+        .isSubtypeOf(superclass));
   }
 
   private static class OwnerTypeSubtypingTests extends SubtypeTester {
@@ -117,15 +115,15 @@ public class TypeTokenSubtypeTest extends TestCase {
 
     @TestSubtype(suppressGetSupertype = true, suppressGetSubtype = true)
     public Mall<? super Outdoor>.Shop<? extends Electronics>
-        bothOwnerTypeAndInnerTypeAreSubtypes_supertypeWithWildcard(
-            Outlet<Outdoor>.Retailer<Electronics> retailer) {
+    bothOwnerTypeAndInnerTypeAreSubtypes_supertypeWithWildcard(
+        Outlet<Outdoor>.Retailer<Electronics> retailer) {
       return isSubtype(retailer);
     }
 
     @TestSubtype(suppressGetSupertype = true, suppressGetSubtype = true)
     public Mall<? super Outdoor>.Shop<? extends Electronics>
-        bothOwnerTypeAndInnerTypeAreSubtypes_withWildcards(
-            Outlet<Outdoor>.Retailer<Electronics> retailer) {
+    bothOwnerTypeAndInnerTypeAreSubtypes_withWildcards(
+        Outlet<Outdoor>.Retailer<Electronics> retailer) {
       return isSubtype(retailer);
     }
 
@@ -161,7 +159,7 @@ public class TypeTokenSubtypeTest extends TestCase {
 
     @TestSubtype
     public Mall<Outdoor>.Shop<? extends Electronics> innerTypeDoesNotMatch_supertypeWithWildcard(
-        Mall<Outdoor>.Shop<Grocery> shop) {
+       Mall<Outdoor>.Shop<Grocery> shop) {
       return notSubtype(shop);
     }
 
@@ -178,7 +176,8 @@ public class TypeTokenSubtypeTest extends TestCase {
     }
 
     @TestSubtype
-    public ConsumerFacing<Grocery> nestedClassIsNotSupertype(Mall<Indoor>.Shop<Grocery> shop) {
+    public ConsumerFacing<Grocery> nestedClassIsNotSupertype(
+        Mall<Indoor>.Shop<Grocery> shop) {
       return notSubtype(shop);
     }
 
@@ -282,7 +281,7 @@ public class TypeTokenSubtypeTest extends TestCase {
 
     @TestSubtype(suppressGetSupertype = true, suppressGetSubtype = true)
     public UseSerializableIterable<? extends Serializable>
-        implicitTypeBoundIsSubtypeOfPartialExplicitTypeBound(UseSerializableIterable<?> obj) {
+    implicitTypeBoundIsSubtypeOfPartialExplicitTypeBound(UseSerializableIterable<?> obj) {
       return isSubtype(obj);
     }
 
@@ -294,14 +293,14 @@ public class TypeTokenSubtypeTest extends TestCase {
 
     @TestSubtype(suppressGetSupertype = true, suppressGetSubtype = true)
     public UseSerializableIterable<? extends CharSequence>
-        implicitTypeBoundIsNotSubtypeOfDifferentTypeBound(UseSerializableIterable<?> obj) {
+    implicitTypeBoundIsNotSubtypeOfDifferentTypeBound(UseSerializableIterable<?> obj) {
       return notSubtype(obj);
     }
 
     @TestSubtype(suppressGetSupertype = true, suppressGetSubtype = true)
     public UseSerializableIterable<? extends CharSequence>
-        partialExplicitTypeBoundIsNotSubtypeOfDifferentTypeBound(
-            UseSerializableIterable<? extends Serializable> obj) {
+    partialExplicitTypeBoundIsNotSubtypeOfDifferentTypeBound(
+        UseSerializableIterable<? extends Serializable> obj) {
       return notSubtype(obj);
     }
   }
@@ -309,25 +308,20 @@ public class TypeTokenSubtypeTest extends TestCase {
   // TODO(benyu): migrate all subtyping tests from TypeTokenTest to this class using SubtypeTester.
 
   private interface Outdoor {}
-
   private interface Indoor {}
-
   private interface Grocery {}
-
   private interface Electronics {}
-
   private interface ConsumerFacing<T> {}
 
   private static class Mall<T> {
     class Shop<ProductT> {}
-
     abstract class Retailer<ProductT> extends Shop<ProductT>
         implements Comparator<ProductT>, ConsumerFacing<ProductT> {}
   }
 
   private static class Outlet<T> extends Mall<T> {}
 
-  private interface UseIterable<T extends Iterable<?>> {}
+  private static interface UseIterable<T extends Iterable<?>> {}
 
-  private interface UseSerializableIterable<T extends Serializable & Iterable<?>> {}
+  private static interface UseSerializableIterable<T extends Serializable&Iterable<?>> {}
 }

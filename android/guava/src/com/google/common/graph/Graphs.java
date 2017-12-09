@@ -32,7 +32,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import javax.annotation.Nullable;
 
 /**
  * Static utility methods for {@link Graph}, {@link ValueGraph}, and {@link Network} instances.
@@ -98,10 +98,7 @@ public final class Graphs {
    * cycle in the graph.
    */
   private static <N> boolean subgraphHasCycle(
-      Graph<N> graph,
-      Map<Object, NodeVisitState> visitedNodes,
-      N node,
-      @NullableDecl N previousNode) {
+      Graph<N> graph, Map<Object, NodeVisitState> visitedNodes, N node, @Nullable N previousNode) {
     NodeVisitState state = visitedNodes.get(node);
     if (state == NodeVisitState.COMPLETE) {
       return false;
@@ -128,7 +125,7 @@ public final class Graphs {
    * from B to A).
    */
   private static boolean canTraverseWithoutReusingEdge(
-      Graph<?> graph, Object nextNode, @NullableDecl Object previousNode) {
+      Graph<?> graph, Object nextNode, @Nullable Object previousNode) {
     if (graph.isDirected() || !Objects.equal(previousNode, nextNode)) {
       return true;
     }
@@ -210,34 +207,33 @@ public final class Graphs {
   }
 
   /**
-   * @deprecated Use {@link Graph#equals(Object)} instead. This method will be removed in January
-   *     2018.
+   * @deprecated Use {@link Graph#equals(Object)} instead. This method will be removed in late 2017.
    */
   // TODO(user): Delete this method.
   @Deprecated
-  public static boolean equivalent(@NullableDecl Graph<?> graphA, @NullableDecl Graph<?> graphB) {
+  public static boolean equivalent(@Nullable Graph<?> graphA, @Nullable Graph<?> graphB) {
     return Objects.equal(graphA, graphB);
   }
 
   /**
-   * @deprecated Use {@link ValueGraph#equals(Object)} instead. This method will be removed in
-   *     January 2018.
+   * @deprecated Use {@link ValueGraph#equals(Object)} instead. This method will be removed in late
+   * 2017.
    */
   // TODO(user): Delete this method.
   @Deprecated
   public static boolean equivalent(
-      @NullableDecl ValueGraph<?, ?> graphA, @NullableDecl ValueGraph<?, ?> graphB) {
+      @Nullable ValueGraph<?, ?> graphA, @Nullable ValueGraph<?, ?> graphB) {
     return Objects.equal(graphA, graphB);
   }
 
   /**
-   * @deprecated Use {@link Network#equals(Object)} instead. This method will be removed in January
-   *     2018.
+   * @deprecated Use {@link Network#equals(Object)} instead. This method will be removed in late
+   * 2017.
    */
   // TODO(user): Delete this method.
   @Deprecated
   public static boolean equivalent(
-      @NullableDecl Network<?, ?> networkA, @NullableDecl Network<?, ?> networkB) {
+      @Nullable Network<?, ?> networkA, @Nullable Network<?, ?> networkB) {
     return Objects.equal(networkA, networkB);
   }
 
@@ -287,12 +283,12 @@ public final class Graphs {
 
     @Override
     public int inDegree(N node) {
-      return delegate().outDegree(node); // transpose
+      return delegate().outDegree(node);  // transpose
     }
 
     @Override
     public int outDegree(N node) {
-      return delegate().inDegree(node); // transpose
+      return delegate().inDegree(node);  // transpose
     }
 
     @Override
@@ -343,12 +339,12 @@ public final class Graphs {
 
     @Override
     public int inDegree(N node) {
-      return delegate().outDegree(node); // transpose
+      return delegate().outDegree(node);  // transpose
     }
 
     @Override
     public int outDegree(N node) {
-      return delegate().inDegree(node); // transpose
+      return delegate().inDegree(node);  // transpose
     }
 
     @Override
@@ -357,8 +353,8 @@ public final class Graphs {
     }
 
     @Override
-    @NullableDecl
-    public V edgeValueOrDefault(N nodeU, N nodeV, @NullableDecl V defaultValue) {
+    @Nullable
+    public V edgeValueOrDefault(N nodeU, N nodeV, @Nullable V defaultValue) {
       return delegate().edgeValueOrDefault(nodeV, nodeU, defaultValue); // transpose
     }
   }
@@ -403,12 +399,12 @@ public final class Graphs {
 
     @Override
     public int inDegree(N node) {
-      return delegate().outDegree(node); // transpose
+      return delegate().outDegree(node);  // transpose
     }
 
     @Override
     public int outDegree(N node) {
-      return delegate().inDegree(node); // transpose
+      return delegate().inDegree(node);  // transpose
     }
 
     @Override
@@ -453,10 +449,9 @@ public final class Graphs {
    * @throws IllegalArgumentException if any element in {@code nodes} is not a node in the graph
    */
   public static <N> MutableGraph<N> inducedSubgraph(Graph<N> graph, Iterable<? extends N> nodes) {
-    MutableGraph<N> subgraph =
-        (nodes instanceof Collection)
-            ? GraphBuilder.from(graph).expectedNodeCount(((Collection) nodes).size()).build()
-            : GraphBuilder.from(graph).build();
+    MutableGraph<N> subgraph = (nodes instanceof Collection)
+        ? GraphBuilder.from(graph).expectedNodeCount(((Collection) nodes).size()).build()
+        : GraphBuilder.from(graph).build();
     for (N node : nodes) {
       subgraph.addNode(node);
     }
@@ -480,10 +475,9 @@ public final class Graphs {
    */
   public static <N, V> MutableValueGraph<N, V> inducedSubgraph(
       ValueGraph<N, V> graph, Iterable<? extends N> nodes) {
-    MutableValueGraph<N, V> subgraph =
-        (nodes instanceof Collection)
-            ? ValueGraphBuilder.from(graph).expectedNodeCount(((Collection) nodes).size()).build()
-            : ValueGraphBuilder.from(graph).build();
+    MutableValueGraph<N, V> subgraph = (nodes instanceof Collection)
+        ? ValueGraphBuilder.from(graph).expectedNodeCount(((Collection) nodes).size()).build()
+        : ValueGraphBuilder.from(graph).build();
     for (N node : nodes) {
       subgraph.addNode(node);
     }
@@ -508,10 +502,9 @@ public final class Graphs {
    */
   public static <N, E> MutableNetwork<N, E> inducedSubgraph(
       Network<N, E> network, Iterable<? extends N> nodes) {
-    MutableNetwork<N, E> subgraph =
-        (nodes instanceof Collection)
-            ? NetworkBuilder.from(network).expectedNodeCount(((Collection) nodes).size()).build()
-            : NetworkBuilder.from(network).build();
+    MutableNetwork<N, E> subgraph = (nodes instanceof Collection)
+        ? NetworkBuilder.from(network).expectedNodeCount(((Collection) nodes).size()).build()
+        : NetworkBuilder.from(network).build();
     for (N node : nodes) {
       subgraph.addNode(node);
     }

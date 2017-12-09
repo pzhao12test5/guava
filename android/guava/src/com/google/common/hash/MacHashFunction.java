@@ -86,7 +86,9 @@ final class MacHashFunction extends AbstractHashFunction {
     return toString;
   }
 
-  /** Hasher that updates a {@link Mac} (message authentication code). */
+  /**
+   * Hasher that updates a {@link Mac} (message authentication code).
+   */
   private static final class MacHasher extends AbstractByteHasher {
     private final Mac mac;
     private boolean done;

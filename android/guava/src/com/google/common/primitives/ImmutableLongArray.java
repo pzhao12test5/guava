@@ -20,7 +20,6 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Preconditions;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import com.google.errorprone.annotations.CheckReturnValue;
 import com.google.errorprone.annotations.Immutable;
 import java.io.Serializable;
 import java.util.AbstractList;
@@ -28,7 +27,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.RandomAccess;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 /**
  * An immutable array of {@code long} values, with an API resembling {@link List}.
@@ -450,7 +450,7 @@ public final class ImmutableLongArray implements Serializable {
     }
 
     @Override
-    public boolean equals(@NullableDecl Object object) {
+    public boolean equals(@Nullable Object object) {
       if (object instanceof AsList) {
         AsList that = (AsList) object;
         return this.parent.equals(that.parent);
@@ -490,7 +490,7 @@ public final class ImmutableLongArray implements Serializable {
    * values as this one, in the same order.
    */
   @Override
-  public boolean equals(@NullableDecl Object object) {
+  public boolean equals(@Nullable Object object) {
     if (object == this) {
       return true;
     }

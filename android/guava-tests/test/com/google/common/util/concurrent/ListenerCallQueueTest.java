@@ -24,7 +24,6 @@ import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.testing.TestLogHandler;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,7 +31,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import junit.framework.TestCase;
 
-/** Tests for {@link ListenerCallQueue}. */
+/**
+ * Tests for {@link ListenerCallQueue}.
+ */
 public class ListenerCallQueueTest extends TestCase {
 
   private static final ListenerCallQueue.Event<Object> THROWING_EVENT =
@@ -195,7 +196,7 @@ public class ListenerCallQueueTest extends TestCase {
 
   private static <T> ImmutableMultiset<T> multiset(Map<T, Integer> counts) {
     ImmutableMultiset.Builder<T> builder = ImmutableMultiset.builder();
-    for (Entry<T, Integer> entry : counts.entrySet()) {
+    for (Map.Entry<T, Integer> entry : counts.entrySet()) {
       builder.addCopies(entry.getKey(), entry.getValue());
     }
     return builder.build();

@@ -16,7 +16,7 @@ package com.google.common.base;
 
 import com.google.common.annotations.GwtCompatible;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import javax.annotation.Nullable;
 
 /**
  * Determines an output value based on an input value; a pre-Java-8 version of {@code
@@ -24,8 +24,9 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *
  * <p>The {@link Functions} class provides common functions and related utilities.
  *
- * <p>See the Guava User Guide article on <a
- * href="https://github.com/google/guava/wiki/FunctionalExplained">the use of {@code Function}</a>.
+ * <p>See the Guava User Guide article on
+ * <a href="https://github.com/google/guava/wiki/FunctionalExplained">the use of {@code
+ * Function}</a>.
  *
  * <h3>For Java 8+ users</h3>
  *
@@ -50,18 +51,18 @@ public interface Function<F, T> {
    * expected</i>, but not absolutely required, to have the following properties:
    *
    * <ul>
-   *   <li>Its execution does not cause any observable side effects.
-   *   <li>The computation is <i>consistent with equals</i>; that is, {@link Objects#equal
-   *       Objects.equal}{@code (a, b)} implies that {@code Objects.equal(function.apply(a),
-   *       function.apply(b))}.
+   * <li>Its execution does not cause any observable side effects.
+   * <li>The computation is <i>consistent with equals</i>; that is, {@link Objects#equal
+   *     Objects.equal}{@code (a, b)} implies that {@code Objects.equal(function.apply(a),
+   *     function.apply(b))}.
    * </ul>
    *
    * @throws NullPointerException if {@code input} is null and this function does not accept null
    *     arguments
    */
-  @NullableDecl
+  @Nullable
   @CanIgnoreReturnValue // TODO(kevinb): remove this
-  T apply(@NullableDecl F input);
+  T apply(@Nullable F input);
 
   /**
    * <i>May</i> return {@code true} if {@code object} is a {@code Function} that behaves identically
@@ -75,5 +76,5 @@ public interface Function<F, T> {
    * disappear. It is best not to depend on it.
    */
   @Override
-  boolean equals(@NullableDecl Object object);
+  boolean equals(@Nullable Object object);
 }

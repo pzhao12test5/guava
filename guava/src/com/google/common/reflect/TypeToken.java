@@ -44,7 +44,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import javax.annotation.Nullable;
 
 /**
  * A {@link Type} with generics.
@@ -56,32 +56,33 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * <p>There are three ways to get a {@code TypeToken} instance:
  *
  * <ul>
- *   <li>Wrap a {@code Type} obtained via reflection. For example: {@code
- *       TypeToken.of(method.getGenericReturnType())}.
- *   <li>Capture a generic type with a (usually anonymous) subclass. For example:
- *       <pre>{@code
- * new TypeToken<List<String>>() {}
- * }</pre>
- *       <p>Note that it's critical that the actual type argument is carried by a subclass. The
- *       following code is wrong because it only captures the {@code <T>} type variable of the
- *       {@code listType()} method signature; while {@code <String>} is lost in erasure:
- *       <pre>{@code
- * class Util {
- *   static <T> TypeToken<List<T>> listType() {
- *     return new TypeToken<List<T>>() {};
- *   }
- * }
  *
- * TypeToken<List<String>> stringListType = Util.<String>listType();
- * }</pre>
- *   <li>Capture a generic type with a (usually anonymous) subclass and resolve it against a context
- *       class that knows what the type parameters are. For example:
- *       <pre>{@code
- * abstract class IKnowMyType<T> {
- *   TypeToken<T> type = new TypeToken<T>(getClass()) {};
- * }
- * new IKnowMyType<String>() {}.type => String
- * }</pre>
+ * <li>Wrap a {@code Type} obtained via reflection. For example:
+ *     {@code TypeToken.of(method.getGenericReturnType())}.
+ *
+ * <li>Capture a generic type with a (usually anonymous) subclass. For example: <pre>   {@code
+ *   new TypeToken<List<String>>() {}}</pre>
+ *
+ *     <p>Note that it's critical that the actual type argument is carried by a subclass. The
+ *     following code is wrong because it only captures the {@code <T>} type variable of the {@code
+ *     listType()} method signature; while {@code <String>} is lost in erasure:
+ *
+ * <pre>   {@code
+ *   class Util {
+ *     static <T> TypeToken<List<T>> listType() {
+ *       return new TypeToken<List<T>>() {};
+ *     }
+ *   }
+ *
+ *   TypeToken<List<String>> stringListType = Util.<String>listType();}</pre>
+ *
+ * <li>Capture a generic type with a (usually anonymous) subclass and resolve it against a context
+ *     class that knows what the type parameters are. For example: <pre>   {@code
+ *   abstract class IKnowMyType<T> {
+ *     TypeToken<T> type = new TypeToken<T>(getClass()) {};
+ *   }
+ *   new IKnowMyType<String>() {}.type => String}</pre>
+ *
  * </ul>
  *
  * <p>{@code TypeToken} is serializable when no type variable is contained in the type.
@@ -109,11 +110,8 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
    * <p>Clients create an empty anonymous subclass. Doing so embeds the type parameter in the
    * anonymous class's type hierarchy so we can reconstitute it at runtime despite erasure.
    *
-   * <p>For example:
-   *
-   * <pre>{@code
-   * TypeToken<List<String>> t = new TypeToken<List<String>>() {};
-   * }</pre>
+   * <p>For example: <pre>   {@code
+   *   TypeToken<List<String>> t = new TypeToken<List<String>>() {};}</pre>
    */
   protected TypeToken() {
     this.runtimeType = capture();
@@ -134,17 +132,14 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
    * <p>Clients create an empty anonymous subclass. Doing so embeds the type parameter in the
    * anonymous class's type hierarchy so we can reconstitute it at runtime despite erasure.
    *
-   * <p>For example:
-   *
-   * <pre>{@code
-   * abstract class IKnowMyType<T> {
-   *   TypeToken<T> getMyType() {
-   *     return new TypeToken<T>(getClass()) {};
+   * <p>For example: <pre>   {@code
+   *   abstract class IKnowMyType<T> {
+   *     TypeToken<T> getMyType() {
+   *       return new TypeToken<T>(getClass()) {};
+   *     }
    *   }
-   * }
    *
-   * new IKnowMyType<String>() {}.getMyType() => String
-   * }</pre>
+   *   new IKnowMyType<String>() {}.getMyType() => String}</pre>
    */
   protected TypeToken(Class<?> declaringClass) {
     Type captured = super.capture();
@@ -170,18 +165,17 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   /**
-   * Returns the raw type of {@code T}. Formally speaking, if {@code T} is returned by {@link
-   * java.lang.reflect.Method#getGenericReturnType}, the raw type is what's returned by {@link
-   * java.lang.reflect.Method#getReturnType} of the same method object. Specifically:
-   *
+   * Returns the raw type of {@code T}. Formally speaking, if {@code T} is returned by
+   * {@link java.lang.reflect.Method#getGenericReturnType}, the raw type is what's returned by
+   * {@link java.lang.reflect.Method#getReturnType} of the same method object. Specifically:
    * <ul>
-   *   <li>If {@code T} is a {@code Class} itself, {@code T} itself is returned.
-   *   <li>If {@code T} is a {@link ParameterizedType}, the raw type of the parameterized type is
-   *       returned.
-   *   <li>If {@code T} is a {@link GenericArrayType}, the returned type is the corresponding array
-   *       class. For example: {@code List<Integer>[] => List[]}.
-   *   <li>If {@code T} is a type variable or a wildcard type, the raw type of the first upper bound
-   *       is returned. For example: {@code <X extends Foo> => Foo}.
+   * <li>If {@code T} is a {@code Class} itself, {@code T} itself is returned.
+   * <li>If {@code T} is a {@link ParameterizedType}, the raw type of the parameterized type is
+   *     returned.
+   * <li>If {@code T} is a {@link GenericArrayType}, the returned type is the corresponding array
+   *     class. For example: {@code List<Integer>[] => List[]}.
+   * <li>If {@code T} is a type variable or a wildcard type, the raw type of the first upper bound
+   *     is returned. For example: {@code <X extends Foo> => Foo}.
    * </ul>
    */
   public final Class<? super T> getRawType() {
@@ -198,18 +192,15 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   /**
-   * Returns a new {@code TypeToken} where type variables represented by {@code typeParam} are
+   * <p>Returns a new {@code TypeToken} where type variables represented by {@code typeParam} are
    * substituted by {@code typeArg}. For example, it can be used to construct {@code Map<K, V>} for
-   * any {@code K} and {@code V} type:
-   *
-   * <pre>{@code
-   * static <K, V> TypeToken<Map<K, V>> mapOf(
-   *     TypeToken<K> keyType, TypeToken<V> valueType) {
-   *   return new TypeToken<Map<K, V>>() {}
-   *       .where(new TypeParameter<K>() {}, keyType)
-   *       .where(new TypeParameter<V>() {}, valueType);
-   * }
-   * }</pre>
+   * any {@code K} and {@code V} type: <pre>   {@code
+   *   static <K, V> TypeToken<Map<K, V>> mapOf(
+   *       TypeToken<K> keyType, TypeToken<V> valueType) {
+   *     return new TypeToken<Map<K, V>>() {}
+   *         .where(new TypeParameter<K>() {}, keyType)
+   *         .where(new TypeParameter<V>() {}, valueType);
+   *   }}</pre>
    *
    * @param <X> The parameter type
    * @param typeParam the parameter type variable
@@ -226,18 +217,15 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   /**
-   * Returns a new {@code TypeToken} where type variables represented by {@code typeParam} are
+   * <p>Returns a new {@code TypeToken} where type variables represented by {@code typeParam} are
    * substituted by {@code typeArg}. For example, it can be used to construct {@code Map<K, V>} for
-   * any {@code K} and {@code V} type:
-   *
-   * <pre>{@code
-   * static <K, V> TypeToken<Map<K, V>> mapOf(
-   *     Class<K> keyType, Class<V> valueType) {
-   *   return new TypeToken<Map<K, V>>() {}
-   *       .where(new TypeParameter<K>() {}, keyType)
-   *       .where(new TypeParameter<V>() {}, valueType);
-   * }
-   * }</pre>
+   * any {@code K} and {@code V} type: <pre>   {@code
+   *   static <K, V> TypeToken<Map<K, V>> mapOf(
+   *       Class<K> keyType, Class<V> valueType) {
+   *     return new TypeToken<Map<K, V>>() {}
+   *         .where(new TypeParameter<K>() {}, keyType)
+   *         .where(new TypeParameter<V>() {}, valueType);
+   *   }}</pre>
    *
    * @param <X> The parameter type
    * @param typeParam the parameter type variable
@@ -248,13 +236,11 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   /**
-   * Resolves the given {@code type} against the type context represented by this type. For example:
-   *
-   * <pre>{@code
-   * new TypeToken<List<String>>() {}.resolveType(
-   *     List.class.getMethod("get", int.class).getGenericReturnType())
-   * => String.class
-   * }</pre>
+   * <p>Resolves the given {@code type} against the type context represented by this type. For
+   * example: <pre>   {@code
+   *   new TypeToken<List<String>>() {}.resolveType(
+   *       List.class.getMethod("get", int.class).getGenericReturnType())
+   *   => String.class}</pre>
    */
   public final TypeToken<?> resolveType(Type type) {
     checkNotNull(type);
@@ -280,9 +266,9 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   /**
-   * Returns the generic superclass of this type or {@code null} if the type represents {@link
-   * Object} or an interface. This method is similar but different from {@link
-   * Class#getGenericSuperclass}. For example, {@code new TypeToken<StringArrayList>()
+   * Returns the generic superclass of this type or {@code null} if the type represents
+   * {@link Object} or an interface. This method is similar but different from
+   * {@link Class#getGenericSuperclass}. For example, {@code new TypeToken<StringArrayList>()
    * {}.getGenericSuperclass()} will return {@code new TypeToken<ArrayList<String>>() {}}; while
    * {@code StringArrayList.class.getGenericSuperclass()} will return {@code ArrayList<E>}, where
    * {@code E} is the type variable declared by class {@code ArrayList}.
@@ -291,7 +277,7 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
    * if the bound is a class or extends from a class. This means that the returned type could be a
    * type variable too.
    */
-  @NullableDecl
+  @Nullable
   final TypeToken<? super T> getGenericSuperclass() {
     if (runtimeType instanceof TypeVariable) {
       // First bound is always the super class, if one exists.
@@ -310,7 +296,7 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
     return superToken;
   }
 
-  @NullableDecl
+  @Nullable
   private TypeToken<? super T> boundAsSuperclass(Type bound) {
     TypeToken<?> token = of(bound);
     if (token.getRawType().isInterface()) {
@@ -324,10 +310,10 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   /**
    * Returns the generic interfaces that this type directly {@code implements}. This method is
    * similar but different from {@link Class#getGenericInterfaces()}. For example, {@code new
-   * TypeToken<List<String>>() {}.getGenericInterfaces()} will return a list that contains {@code
-   * new TypeToken<Iterable<String>>() {}}; while {@code List.class.getGenericInterfaces()} will
-   * return an array that contains {@code Iterable<T>}, where the {@code T} is the type variable
-   * declared by interface {@code Iterable}.
+   * TypeToken<List<String>>() {}.getGenericInterfaces()} will return a list that contains
+   * {@code new TypeToken<Iterable<String>>() {}}; while {@code List.class.getGenericInterfaces()}
+   * will return an array that contains {@code Iterable<T>}, where the {@code T} is the type
+   * variable declared by interface {@code Iterable}.
    *
    * <p>If this type is a type variable or wildcard, its upper bounds are examined and those that
    * are either an interface or upper-bounded only by interfaces are returned. This means that the
@@ -378,9 +364,9 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   /**
-   * Returns the generic form of {@code superclass}. For example, if this is {@code
-   * ArrayList<String>}, {@code Iterable<String>} is returned given the input {@code
-   * Iterable.class}.
+   * Returns the generic form of {@code superclass}. For example, if this is
+   * {@code ArrayList<String>}, {@code Iterable<String>} is returned given the input
+   * {@code Iterable.class}.
    */
   public final TypeToken<? super T> getSupertype(Class<? super T> superclass) {
     checkArgument(
@@ -429,9 +415,9 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
 
   /**
    * Returns true if this type is a supertype of the given {@code type}. "Supertype" is defined
-   * according to <a
-   * href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.5.1">the rules for type
-   * arguments</a> introduced with Java generics.
+   * according to
+   * <a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.5.1">the rules for
+   * type arguments</a> introduced with Java generics.
    *
    * @since 19.0
    */
@@ -441,9 +427,9 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
 
   /**
    * Returns true if this type is a supertype of the given {@code type}. "Supertype" is defined
-   * according to <a
-   * href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.5.1">the rules for type
-   * arguments</a> introduced with Java generics.
+   * according to
+   * <a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.5.1">the rules for
+   * type arguments</a> introduced with Java generics.
    *
    * @since 19.0
    */
@@ -453,9 +439,9 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
 
   /**
    * Returns true if this type is a subtype of the given {@code type}. "Subtype" is defined
-   * according to <a
-   * href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.5.1">the rules for type
-   * arguments</a> introduced with Java generics.
+   * according to
+   * <a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.5.1">the rules for
+   * type arguments</a> introduced with Java generics.
    *
    * @since 19.0
    */
@@ -465,9 +451,9 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
 
   /**
    * Returns true if this type is a subtype of the given {@code type}. "Subtype" is defined
-   * according to <a
-   * href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.5.1">the rules for type
-   * arguments</a> introduced with Java generics.
+   * according to
+   * <a href="http://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html#jls-4.5.1">the rules for
+   * type arguments</a> introduced with Java generics.
    *
    * @since 19.0
    */
@@ -524,8 +510,8 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   /**
-   * Returns the corresponding wrapper type if this is a primitive type; otherwise returns {@code
-   * this} itself. Idempotent.
+   * Returns the corresponding wrapper type if this is a primitive type; otherwise returns
+   * {@code this} itself. Idempotent.
    *
    * @since 15.0
    */
@@ -543,8 +529,8 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   /**
-   * Returns the corresponding primitive type if this is a wrapper type; otherwise returns {@code
-   * this} itself. Idempotent.
+   * Returns the corresponding primitive type if this is a wrapper type; otherwise returns
+   * {@code this} itself. Idempotent.
    *
    * @since 15.0
    */
@@ -561,7 +547,7 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
    * Returns the array component type if this type represents an array ({@code int[]}, {@code T[]},
    * {@code <? extends Map<String, Integer>[]>} etc.), or else {@code null} is returned.
    */
-  @NullableDecl
+  @Nullable
   public final TypeToken<?> getComponentType() {
     Type componentType = Types.getComponentType(runtimeType);
     if (componentType == null) {
@@ -820,7 +806,7 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
    * Returns true if {@code o} is another {@code TypeToken} that represents the same {@link Type}.
    */
   @Override
-  public boolean equals(@NullableDecl Object o) {
+  public boolean equals(@Nullable Object o) {
     if (o instanceof TypeToken) {
       TypeToken<?> that = (TypeToken<?>) o;
       return runtimeType.equals(that.runtimeType);
@@ -949,9 +935,9 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
    * Return true if any of the following conditions is met:
    *
    * <ul>
-   *   <li>'this' and {@code formalType} are equal
-   *   <li>{@code formalType} is {@code <? extends Foo>} and 'this' is a subtype of {@code Foo}
-   *   <li>{@code formalType} is {@code <? super Foo>} and 'this' is a supertype of {@code Foo}
+   * <li>'this' and {@code formalType} are equal
+   * <li>{@code formalType} is {@code <? extends Foo>} and 'this' is a subtype of {@code Foo}
+   * <li>{@code formalType} is {@code <? super Foo>} and 'this' is a supertype of {@code Foo}
    * </ul>
    */
   private boolean is(Type formalType) {
@@ -1054,11 +1040,10 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   /**
-   * Returns the owner type of a {@link ParameterizedType} or enclosing class of a {@link Class}, or
-   * null otherwise.
+   * Returns the owner type of a {@link ParameterizedType} or enclosing class of a {@link Class},
+   * or null otherwise.
    */
-  @NullableDecl
-  private Type getOwnerTypeIfPresent() {
+  @Nullable private Type getOwnerTypeIfPresent() {
     if (runtimeType instanceof ParameterizedType) {
       return ((ParameterizedType) runtimeType).getOwnerType();
     } else if (runtimeType instanceof Class<?>) {
@@ -1183,8 +1168,8 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
   }
 
   /**
-   * Creates an array class if {@code componentType} is a class, or else, a {@link
-   * GenericArrayType}. This is what Java7 does for generic array type parameters.
+   * Creates an array class if {@code componentType} is a class, or else, a
+   * {@link GenericArrayType}. This is what Java7 does for generic array type parameters.
    */
   private static Type newArrayClassOrGenericArrayType(Type componentType) {
     return Types.JavaVersion.JAVA7.newArrayType(componentType);
@@ -1218,7 +1203,7 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
             return type.getGenericInterfaces();
           }
 
-          @NullableDecl
+          @Nullable
           @Override
           TypeToken<?> getSuperclass(TypeToken<?> type) {
             return type.getGenericSuperclass();
@@ -1237,7 +1222,7 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
             return Arrays.asList(type.getInterfaces());
           }
 
-          @NullableDecl
+          @Nullable
           @Override
           Class<?> getSuperclass(Class<?> type) {
             return type.getSuperclass();
@@ -1320,7 +1305,7 @@ public abstract class TypeToken<T> extends TypeCapture<T> implements Serializabl
 
     abstract Iterable<? extends K> getInterfaces(K type);
 
-    @NullableDecl
+    @Nullable
     abstract K getSuperclass(K type);
 
     private static class ForwardingTypeCollector<K> extends TypeCollector<K> {

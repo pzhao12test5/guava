@@ -26,7 +26,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A generic JUnit test which tests {@link List#replaceAll}. Can't be invoked directly; please see
+ * A generic JUnit test which tests {@link List#replaceAll}. Can't be
+ * invoked directly; please see
  * {@link com.google.common.collect.testing.ListTestSuiteBuilder}.
  *
  * @author Louis Wasserman

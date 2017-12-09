@@ -39,8 +39,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
- * A generic JUnit test which tests {@code iterator} operations on a collection. Can't be invoked
- * directly; please see {@link com.google.common.collect.testing.CollectionTestSuiteBuilder}.
+ * A generic JUnit test which tests {@code iterator} operations on a collection.
+ * Can't be invoked directly; please see
+ * {@link com.google.common.collect.testing.CollectionTestSuiteBuilder}.
  *
  * @author Chris Povirk
  */

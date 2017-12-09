@@ -27,7 +27,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+import javax.annotation.Nullable;
 
 /**
  * A reference queue with an associated background thread that dequeues references and invokes
@@ -38,12 +38,12 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  * finalizeReferent()} on the remaining references.
  *
  * <p>As an example of how this is used, imagine you have a class {@code MyServer} that creates a a
- * {@link java.net.ServerSocket ServerSocket}, and you would like to ensure that the {@code
- * ServerSocket} is closed even if the {@code MyServer} object is garbage-collected without calling
- * its {@code close} method. You <em>could</em> use a finalizer to accomplish this, but that has a
- * number of well-known problems. Here is how you might use this class instead:
+ * {@link java.net.ServerSocket ServerSocket}, and you would like to ensure that the
+ * {@code ServerSocket} is closed even if the {@code MyServer} object is garbage-collected without
+ * calling its {@code close} method. You <em>could</em> use a finalizer to accomplish this, but that
+ * has a number of well-known problems. Here is how you might use this class instead:
  *
- * <pre>{@code
+ * <pre>   {@code
  * public class MyServer implements Closeable {
  *   private static final FinalizableReferenceQueue frq = new FinalizableReferenceQueue();
  *   // You might also share this between several objects.
@@ -82,8 +82,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
  *   public void close() {
  *     serverSocket.close();
  *   }
- * }
- * }</pre>
+ * }}</pre>
  *
  * @author Bob Lee
  * @since 2.0
@@ -139,15 +138,21 @@ public class FinalizableReferenceQueue implements Closeable {
     startFinalizer = getStartFinalizer(finalizer);
   }
 
-  /** The actual reference queue that our background thread will poll. */
+  /**
+   * The actual reference queue that our background thread will poll.
+   */
   final ReferenceQueue<Object> queue;
 
   final PhantomReference<Object> frqRef;
 
-  /** Whether or not the background thread started successfully. */
+  /**
+   * Whether or not the background thread started successfully.
+   */
   final boolean threadStarted;
 
-  /** Constructs a new queue. */
+  /**
+   * Constructs a new queue.
+   */
   public FinalizableReferenceQueue() {
     // We could start the finalizer lazily, but I'd rather it blow up early.
     queue = new ReferenceQueue<>();
@@ -176,9 +181,9 @@ public class FinalizableReferenceQueue implements Closeable {
   }
 
   /**
-   * Repeatedly dequeues references from the queue and invokes {@link
-   * FinalizableReference#finalizeReferent()} on them until the queue is empty. This method is a
-   * no-op if the background thread was created successfully.
+   * Repeatedly dequeues references from the queue and invokes
+   * {@link FinalizableReference#finalizeReferent()} on them until the queue is empty. This method
+   * is a no-op if the background thread was created successfully.
    */
   void cleanUp() {
     if (threadStarted) {
@@ -216,7 +221,9 @@ public class FinalizableReferenceQueue implements Closeable {
     throw new AssertionError();
   }
 
-  /** Loads Finalizer.class. */
+  /**
+   * Loads Finalizer.class.
+   */
   interface FinalizerLoader {
 
     /**
@@ -224,7 +231,7 @@ public class FinalizableReferenceQueue implements Closeable {
      *
      * @throws SecurityException if we don't have the appropriate privileges
      */
-    @NullableDecl
+    @Nullable
     Class<?> loadFinalizer();
   }
 
@@ -237,7 +244,7 @@ public class FinalizableReferenceQueue implements Closeable {
     // finding Finalizer on the system class path even if it is there.
     @VisibleForTesting static boolean disabled;
 
-    @NullableDecl
+    @Nullable
     @Override
     public Class<?> loadFinalizer() {
       if (disabled) {
@@ -275,7 +282,7 @@ public class FinalizableReferenceQueue implements Closeable {
             + "loader. To support reclaiming this class loader, either resolve the underlying "
             + "issue, or move Guava to your system class path.";
 
-    @NullableDecl
+    @Nullable
     @Override
     public Class<?> loadFinalizer() {
       try {
@@ -296,7 +303,9 @@ public class FinalizableReferenceQueue implements Closeable {
       }
     }
 
-    /** Gets URL for base of path containing Finalizer.class. */
+    /**
+     * Gets URL for base of path containing Finalizer.class.
+     */
     URL getBaseUrl() throws IOException {
       // Find URL pointing to Finalizer.class file.
       String finalizerPath = FINALIZER_CLASS_NAME.replace('.', '/') + ".class";
@@ -338,7 +347,9 @@ public class FinalizableReferenceQueue implements Closeable {
     }
   }
 
-  /** Looks up Finalizer.startFinalizer(). */
+  /**
+   * Looks up Finalizer.startFinalizer().
+   */
   static Method getStartFinalizer(Class<?> finalizer) {
     try {
       return finalizer.getMethod(
