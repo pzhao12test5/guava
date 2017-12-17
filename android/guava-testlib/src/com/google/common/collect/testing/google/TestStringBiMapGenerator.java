@@ -21,6 +21,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.testing.Helpers;
 import com.google.common.collect.testing.SampleElements;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 /**
@@ -36,7 +37,7 @@ import java.util.Map.Entry;
 public abstract class TestStringBiMapGenerator implements TestBiMapGenerator<String, String> {
 
   @Override
-  public SampleElements<Entry<String, String>> samples() {
+  public SampleElements<Map.Entry<String, String>> samples() {
     return new SampleElements<>(
         Helpers.mapEntry("one", "January"),
         Helpers.mapEntry("two", "February"),

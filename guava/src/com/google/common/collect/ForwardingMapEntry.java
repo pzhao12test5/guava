@@ -57,7 +57,7 @@ public abstract class ForwardingMapEntry<K, V> extends ForwardingObject implemen
   protected ForwardingMapEntry() {}
 
   @Override
-  protected abstract Entry<K, V> delegate();
+  protected abstract Map.Entry<K, V> delegate();
 
   @Override
   public K getKey() {

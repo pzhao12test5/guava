@@ -1271,15 +1271,15 @@ public class MapsTest extends TestCase {
       values.remove("four");
       fail("UnsupportedOperationException expected");
     } catch (UnsupportedOperationException expected) {}
-    Set<Entry<Number, String>> entries = unmod.entrySet();
-    Entry<Number, String> entry = entries.iterator().next();
+    Set<Map.Entry<Number, String>> entries = unmod.entrySet();
+    Map.Entry<Number, String> entry = entries.iterator().next();
     try {
       entry.setValue("four");
       fail("UnsupportedOperationException expected");
     } catch (UnsupportedOperationException expected) {}
     @SuppressWarnings("unchecked")
-    Entry<Integer, String> entry2
-        = (Entry<Integer, String>) entries.toArray()[0];
+    Map.Entry<Integer, String> entry2
+        = (Map.Entry<Integer, String>) entries.toArray()[0];
     try {
       entry2.setValue("four");
       fail("UnsupportedOperationException expected");
@@ -1287,7 +1287,7 @@ public class MapsTest extends TestCase {
   }
 
   public void testImmutableEntry() {
-    Entry<String, Integer> e = Maps.immutableEntry("foo", 1);
+    Map.Entry<String, Integer> e = Maps.immutableEntry("foo", 1);
     assertEquals("foo", e.getKey());
     assertEquals(1, (int) e.getValue());
     try {
@@ -1299,7 +1299,7 @@ public class MapsTest extends TestCase {
   }
 
   public void testImmutableEntryNull() {
-    Entry<String, Integer> e
+    Map.Entry<String, Integer> e
         = Maps.immutableEntry((String) null, (Integer) null);
     assertNull(e.getKey());
     assertNull(e.getValue());
@@ -1786,15 +1786,15 @@ public class MapsTest extends TestCase {
     } catch (UnsupportedOperationException expected) {
     }
 
-    Set<Entry<Integer, String>> entries = unmod.entrySet();
+    Set<Map.Entry<Integer, String>> entries = unmod.entrySet();
     try {
-      Iterator<Entry<Integer, String>> iterator = entries.iterator();
+      Iterator<Map.Entry<Integer, String>> iterator = entries.iterator();
       iterator.next();
       iterator.remove();
       fail("UnsupportedOperationException expected");
     } catch (UnsupportedOperationException expected) {
     }
-    Entry<Integer, String> entry = entries.iterator().next();
+    Map.Entry<Integer, String> entry = entries.iterator().next();
     try {
       entry.setValue("four");
       fail("UnsupportedOperationException expected");
@@ -1839,8 +1839,8 @@ public class MapsTest extends TestCase {
     } catch (UnsupportedOperationException expected) {
     }
         @SuppressWarnings("unchecked")
-    Entry<Integer, String> entry2 =
-        (Entry<Integer, String>) entries.toArray()[0];
+    Map.Entry<Integer, String> entry2 =
+        (Map.Entry<Integer, String>) entries.toArray()[0];
     try {
       entry2.setValue("four");
       fail("UnsupportedOperationException expected");

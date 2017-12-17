@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CountDownLatch;
@@ -441,7 +440,7 @@ public class CacheLoadingTest extends TestCase {
     Object[] lookupKeys = new Object[] { new Object(), new Object(), new Object() };
     Map<Object, Object> result = cache.getAll(asList(lookupKeys));
     assertThat(result.keySet()).containsExactlyElementsIn(asList(lookupKeys));
-    for (Entry<Object, Object> entry : result.entrySet()) {
+    for (Map.Entry<Object, Object> entry : result.entrySet()) {
       Object key = entry.getKey();
       Object value = entry.getValue();
       assertSame(value, result.get(key));
@@ -479,7 +478,7 @@ public class CacheLoadingTest extends TestCase {
     Object[] lookupKeys = new Object[] { new Object(), new Object(), new Object() };
     Map<Object, Object> result = cache.getAll(asList(lookupKeys));
     assertThat(result.keySet()).containsExactlyElementsIn(asList(lookupKeys));
-    for (Entry<Object, Object> entry : result.entrySet()) {
+    for (Map.Entry<Object, Object> entry : result.entrySet()) {
       Object key = entry.getKey();
       Object value = entry.getValue();
       assertSame(value, result.get(key));

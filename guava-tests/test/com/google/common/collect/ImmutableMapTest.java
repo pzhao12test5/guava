@@ -325,14 +325,14 @@ public class ImmutableMapTest extends TestCase {
     @GwtIncompatible
     public void testBuilderExactlySizedReusesArray() {
       ImmutableMap.Builder<Integer, Integer> builder = ImmutableMap.builderWithExpectedSize(10);
-      Entry<Integer, Integer>[] builderArray = builder.entries;
+      Map.Entry<Integer, Integer>[] builderArray = builder.entries;
       for (int i = 0; i < 10; i++) {
         builder.put(i, i);
       }
-      Entry<Integer, Integer>[] builderArrayAfterPuts = builder.entries;
+      Map.Entry<Integer, Integer>[] builderArrayAfterPuts = builder.entries;
       RegularImmutableMap<Integer, Integer> map =
           (RegularImmutableMap<Integer, Integer>) builder.build();
-      Entry<Integer, Integer>[] mapInternalArray = map.entries;
+      Map.Entry<Integer, Integer>[] mapInternalArray = map.entries;
       assertSame(builderArray, builderArrayAfterPuts);
       assertSame(builderArray, mapInternalArray);
     }

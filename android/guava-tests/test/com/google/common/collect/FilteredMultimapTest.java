@@ -19,6 +19,7 @@ package com.google.common.collect;
 import com.google.common.annotations.GwtIncompatible;
 import com.google.common.base.Predicate;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Map.Entry;
 import junit.framework.TestCase;
 
@@ -30,8 +31,8 @@ import junit.framework.TestCase;
 @GwtIncompatible // nottested
 public class FilteredMultimapTest extends TestCase {
 
-  private static final Predicate<Entry<String, Integer>> ENTRY_PREDICATE
-      = new Predicate<Entry<String, Integer>>() {
+  private static final Predicate<Map.Entry<String, Integer>> ENTRY_PREDICATE
+      = new Predicate<Map.Entry<String, Integer>>() {
         @Override public boolean apply(Entry<String, Integer> entry) {
           return !"badkey".equals(entry.getKey()) && !((Integer) 55556).equals(entry.getValue());
         }

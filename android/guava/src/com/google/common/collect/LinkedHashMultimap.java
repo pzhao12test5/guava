@@ -35,7 +35,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.annotation.Nullable;
@@ -289,7 +288,7 @@ public final class LinkedHashMultimap<K, V>
    * collection or its iterator.
    */
   @Override
-  public Set<Entry<K, V>> entries() {
+  public Set<Map.Entry<K, V>> entries() {
     return super.entries();
   }
 
@@ -517,8 +516,8 @@ public final class LinkedHashMultimap<K, V>
   }
 
   @Override
-  Iterator<Entry<K, V>> entryIterator() {
-    return new Iterator<Entry<K, V>>() {
+  Iterator<Map.Entry<K, V>> entryIterator() {
+    return new Iterator<Map.Entry<K, V>>() {
       ValueEntry<K, V> nextEntry = multimapHeaderEntry.successorInMultimap;
       ValueEntry<K, V> toRemove;
 
@@ -528,7 +527,7 @@ public final class LinkedHashMultimap<K, V>
       }
 
       @Override
-      public Entry<K, V> next() {
+      public Map.Entry<K, V> next() {
         if (!hasNext()) {
           throw new NoSuchElementException();
         }
@@ -570,7 +569,7 @@ public final class LinkedHashMultimap<K, V>
       stream.writeObject(key);
     }
     stream.writeInt(size());
-    for (Entry<K, V> entry : entries()) {
+    for (Map.Entry<K, V> entry : entries()) {
       stream.writeObject(entry.getKey());
       stream.writeObject(entry.getValue());
     }

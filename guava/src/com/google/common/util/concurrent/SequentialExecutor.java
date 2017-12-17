@@ -80,6 +80,7 @@ final class SequentialExecutor implements Executor {
    * Starts a worker.  This should only be called if:
    *
    * <ul>
+   *   <li>{@code suspensions == 0}
    *   <li>{@code isWorkerRunning == true}
    *   <li>{@code !queue.isEmpty()}
    *   <li>the {@link #worker} lock is not held
