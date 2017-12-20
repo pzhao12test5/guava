@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
+import javax.annotation.concurrent.Immutable;
 
 /**
  * Base class for implementing services that can handle {@link #doStart} and {@link #doStop}
@@ -541,7 +542,7 @@ public abstract class AbstractService implements Service {
    * snapshot of the state and therefore it can be used to answer simple queries without needing to
    * grab a lock.
    */
-  // @Immutable except that Throwable is mutable (initCause(), setStackTrace(), mutable subclasses).
+  @Immutable
   private static final class StateSnapshot {
     /**
      * The internal state, which equals external state unless shutdownWhenStartupFinishes is true.

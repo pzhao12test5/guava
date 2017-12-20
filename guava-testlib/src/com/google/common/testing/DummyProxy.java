@@ -29,6 +29,7 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Set;
+import javax.annotation.Nullable;
 
 /**
  * Generates a dummy interface proxy that simply returns a dummy value for each method.
@@ -72,7 +73,7 @@ abstract class DummyProxy {
       ImmutableList<Parameter> params = invokable.getParameters();
       for (int i = 0; i < args.length; i++) {
         Parameter param = params.get(i);
-        if (!param.isAnnotationPresent(javax.annotation.Nullable.class)) {
+        if (!param.isAnnotationPresent(Nullable.class)) {
           checkNotNull(args[i]);
         }
       }

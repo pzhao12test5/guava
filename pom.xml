@@ -22,7 +22,7 @@
   <gib.commitRange>${env.TRAVIS_COMMIT_RANGE}</gib.commitRange>
         <gib.enabled>true</gib.enabled>
         <gib.useEkstazi>true</gib.useEkstazi>
-        <gib.excludePathRegex>(.*\.txt$)|(.*\.md$)|(.*\.html$)|(.*\.rst$)|(.*\.scss$)|(.*\.css$)|(.*\.png$)|(.*\.py$)|(.*README$)|(.*\.jpg$)|(.*\.jpeg$)|(.*NOTICE$)|(.*\.gitignore$)</gib.excludePathRegex>
+        <gib.excludePathRegex>(.*\.apt$)|(.*\.txt$)|(.*\.md$)|(.*\.html$)|(.*\.rst$)|(.*\.scss$)|(.*\.css$)|(.*\.png$)|(.*\.py$)|(.*README$)|(.*\.jpg$)|(.*\.jpeg$)|(.*NOTICE$)|(.*\.gitignore$)</gib.excludePathRegex>
     </properties>
   <issueManagement>
     <system>GitHub Issues</system>
@@ -233,11 +233,6 @@
         <groupId>com.google.code.findbugs</groupId>
         <artifactId>jsr305</artifactId>
         <version>1.3.9</version>
-      </dependency>
-      <dependency>
-        <groupId>org.checkerframework</groupId>
-        <artifactId>checker-qual</artifactId>
-        <version>2.0.0</version>
       </dependency>
       <dependency>
         <groupId>com.google.errorprone</groupId>

@@ -29,6 +29,7 @@ import com.google.common.util.concurrent.SmoothRateLimiter.SmoothWarmingUp;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.concurrent.ThreadSafe;
 
 /**
  * A rate limiter. Conceptually, a rate limiter distributes permits at a configurable rate. Each
@@ -82,6 +83,7 @@ import java.util.concurrent.TimeUnit;
  */
 // TODO(user): switch to nano precision. A natural unit of cost is "bytes", and a micro precision
 // would mean a maximum rate of "1MB/s", which might be small in some cases.
+@ThreadSafe
 @Beta
 @GwtIncompatible
 public abstract class RateLimiter {

@@ -16,7 +16,6 @@ package com.google.common.util.concurrent;
 
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtIncompatible;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -93,7 +92,6 @@ public interface TimeLimiter {
    * @throws ExecutionError if {@code callable} throws an {@code Error}
    * @since 22.0
    */
-  @CanIgnoreReturnValue
   <T> T callWithTimeout(Callable<T> callable, long timeoutDuration, TimeUnit timeoutUnit)
       throws TimeoutException, InterruptedException, ExecutionException;
 
@@ -116,7 +114,6 @@ public interface TimeLimiter {
    * @throws ExecutionError if {@code callable} throws an {@code Error}
    * @since 22.0
    */
-  @CanIgnoreReturnValue
   <T> T callUninterruptiblyWithTimeout(
       Callable<T> callable, long timeoutDuration, TimeUnit timeoutUnit)
       throws TimeoutException, ExecutionException;

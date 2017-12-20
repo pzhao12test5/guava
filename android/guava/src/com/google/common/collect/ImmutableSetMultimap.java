@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import javax.annotation.Nullable;
 
@@ -261,11 +262,11 @@ public class ImmutableSetMultimap<K, V> extends ImmutableMultimap<K, V>
       if (keyComparator != null) {
         Multimap<K, V> sortedCopy =
             MultimapBuilder.linkedHashKeys().linkedHashSetValues().<K, V>build();
-        List<Entry<K, Collection<V>>> entries =
+        List<Map.Entry<K, Collection<V>>> entries =
             Ordering.from(keyComparator)
                 .<K>onKeys()
                 .immutableSortedCopy(builderMultimap.asMap().entrySet());
-        for (Entry<K, Collection<V>> entry : entries) {
+        for (Map.Entry<K, Collection<V>> entry : entries) {
           sortedCopy.putAll(entry.getKey(), entry.getValue());
         }
         builderMultimap = sortedCopy;

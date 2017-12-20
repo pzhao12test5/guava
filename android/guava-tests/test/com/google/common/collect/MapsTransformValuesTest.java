@@ -23,7 +23,6 @@ import com.google.common.collect.testing.MapInterfaceTest;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -221,12 +220,12 @@ public class MapsTransformValuesTest extends MapInterfaceTest<String, String> {
     valueIterator.remove();
     assertFalse(underlying.containsKey("e"));
 
-    Set<Entry<String, String>> entries = map.entrySet();
-    Entry<String, String> firstEntry = entries.iterator().next();
+    Set<Map.Entry<String, String>> entries = map.entrySet();
+    Map.Entry<String, String> firstEntry = entries.iterator().next();
     entries.remove(firstEntry);
     assertFalse(underlying.containsKey("f"));
 
-    Iterator<Entry<String, String>> entryIterator = entries.iterator();
+    Iterator<Map.Entry<String, String>> entryIterator = entries.iterator();
     entryIterator.next();
     entryIterator.remove();
     assertFalse(underlying.containsKey("g"));
@@ -277,7 +276,7 @@ public class MapsTransformValuesTest extends MapInterfaceTest<String, String> {
         }
     );
 
-    Set<Entry<String, Boolean>> entries = map.entrySet();
+    Set<Map.Entry<String, Boolean>> entries = map.entrySet();
     assertTrue(entries.contains(Maps.immutableEntry("a", true)));
     assertTrue(entries.contains(Maps.immutableEntry("b", (Boolean) null)));
     assertTrue(entries.contains(

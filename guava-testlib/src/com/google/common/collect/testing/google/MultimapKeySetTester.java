@@ -26,7 +26,7 @@ import com.google.common.collect.testing.features.CollectionFeature;
 import com.google.common.collect.testing.features.CollectionSize;
 import com.google.common.collect.testing.features.MapFeature;
 import java.util.Iterator;
-import java.util.Map.Entry;
+import java.util.Map;
 
 /**
  * Tester for {@code Multimap.keySet}.
@@ -36,7 +36,7 @@ import java.util.Map.Entry;
 @GwtCompatible
 public class MultimapKeySetTester<K, V> extends AbstractMultimapTester<K, V, Multimap<K, V>> {
   public void testKeySet() {
-    for (Entry<K, V> entry : getSampleElements()) {
+    for (Map.Entry<K, V> entry : getSampleElements()) {
       assertTrue(multimap().keySet().contains(entry.getKey()));
     }
   }

@@ -141,7 +141,7 @@ public class LocalCache<K, V> implements ConcurrentMap<K, V> {
 
   @Override
   public void putAll(Map<? extends K, ? extends V> m) {
-    for (Entry<? extends K, ? extends V> entry : m.entrySet()) {
+    for (Map.Entry<? extends K, ? extends V> entry : m.entrySet()) {
       put(entry.getKey(), entry.getValue());
     }
   }
@@ -149,7 +149,7 @@ public class LocalCache<K, V> implements ConcurrentMap<K, V> {
   @Override
   public void clear() {
     if (removalListener != null) {
-      for (Entry<K, Timestamped<V>> entry : cachingHashMap.entrySet()) {
+      for (Map.Entry<K, Timestamped<V>> entry : cachingHashMap.entrySet()) {
         alertListenerIfPresent(entry.getKey(), entry.getValue().getValue(), RemovalCause.EXPLICIT);
       }
     }
@@ -483,7 +483,7 @@ public class LocalCache<K, V> implements ConcurrentMap<K, V> {
     }
 
     @Override
-    protected boolean removeEldestEntry(Entry<K, Timestamped<V>> ignored) {
+    protected boolean removeEldestEntry(Map.Entry<K, Timestamped<V>> ignored) {
       boolean removal = (maximumSize == UNSET_INT) ? false : (size() > maximumSize);
       if ((removalListener != null) && removal) {
         removalListener.onRemoval(RemovalNotification.create(

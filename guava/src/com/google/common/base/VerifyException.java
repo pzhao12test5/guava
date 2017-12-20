@@ -14,6 +14,7 @@
 
 package com.google.common.base;
 
+import com.google.common.annotations.Beta;
 import com.google.common.annotations.GwtCompatible;
 import javax.annotation.Nullable;
 
@@ -24,6 +25,7 @@ import javax.annotation.Nullable;
  *
  * @since 17.0
  */
+@Beta
 @GwtCompatible
 public class VerifyException extends RuntimeException {
   /** Constructs a {@code VerifyException} with no message. */
