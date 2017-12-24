@@ -25,7 +25,6 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import junit.framework.TestCase;
 
@@ -194,7 +193,7 @@ public class SynchronizedMapTest extends TestCase {
 
   public void testEntrySet() {
     Map<String, Integer> map = create();
-    Set<Entry<String, Integer>> entrySet = map.entrySet();
+    Set<Map.Entry<String, Integer>> entrySet = map.entrySet();
     assertTrue(entrySet instanceof SynchronizedSet);
     assertSame(mutex, ((SynchronizedSet<?>) entrySet).mutex);
   }

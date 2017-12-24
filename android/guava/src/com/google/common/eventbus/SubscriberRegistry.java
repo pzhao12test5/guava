@@ -40,7 +40,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -77,7 +76,7 @@ final class SubscriberRegistry {
   void register(Object listener) {
     Multimap<Class<?>, Subscriber> listenerMethods = findAllSubscribers(listener);
 
-    for (Entry<Class<?>, Collection<Subscriber>> entry : listenerMethods.asMap().entrySet()) {
+    for (Map.Entry<Class<?>, Collection<Subscriber>> entry : listenerMethods.asMap().entrySet()) {
       Class<?> eventType = entry.getKey();
       Collection<Subscriber> eventMethodsInListener = entry.getValue();
 
@@ -99,7 +98,7 @@ final class SubscriberRegistry {
   void unregister(Object listener) {
     Multimap<Class<?>, Subscriber> listenerMethods = findAllSubscribers(listener);
 
-    for (Entry<Class<?>, Collection<Subscriber>> entry : listenerMethods.asMap().entrySet()) {
+    for (Map.Entry<Class<?>, Collection<Subscriber>> entry : listenerMethods.asMap().entrySet()) {
       Class<?> eventType = entry.getKey();
       Collection<Subscriber> listenerMethodsForType = entry.getValue();
 

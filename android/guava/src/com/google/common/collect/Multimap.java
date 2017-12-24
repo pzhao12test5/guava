@@ -22,7 +22,6 @@ import com.google.errorprone.annotations.CompatibleWith;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -340,13 +339,13 @@ public interface Multimap<K, V> {
 
   /**
    * Returns a view collection of all key-value pairs contained in this
-   * multimap, as {@link Entry} instances.
+   * multimap, as {@link Map.Entry} instances.
    *
    * <p>Changes to the returned collection or the entries it contains will
    * update the underlying multimap, and vice versa. However, <i>adding</i> to
    * the returned collection is not possible.
    */
-  Collection<Entry<K, V>> entries();
+  Collection<Map.Entry<K, V>> entries();
 
   /**
    * Returns a view of this multimap as a {@code Map} from each distinct key
@@ -358,7 +357,7 @@ public interface Multimap<K, V> {
    * <p>Changes to the returned map or the collections that serve as its values
    * will update the underlying multimap, and vice versa. The map does not
    * support {@code put} or {@code putAll}, nor do its entries support {@link
-   * Entry#setValue setValue}.
+   * Map.Entry#setValue setValue}.
    */
   Map<K, Collection<V>> asMap();
 

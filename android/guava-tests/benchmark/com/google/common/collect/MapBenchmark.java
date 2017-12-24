@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -219,7 +218,7 @@ public class MapBenchmark {
 
     boolean dummy = false;
     for (int i = 0; i < reps; i++) {
-      for (Entry<Element, Element> entry : map.entrySet()) {
+      for (Map.Entry<Element, Element> entry : map.entrySet()) {
         dummy ^= entry.getKey() != entry.getValue();
       }
     }
